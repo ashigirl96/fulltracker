@@ -1,19 +1,8 @@
-import { useEffect, useState } from 'react'
-
-import type { Session } from '@supabase/gotrue-js'
-
 import { Auth } from '@/components/Auth'
-import { supabase } from '@/lib/susbase/client'
+import { useGetSession } from '@/lib/susbase/useSession'
 
 export default function Home() {
-  const [session, setSession] = useState<Session | null>(null)
-
-  useEffect(() => {
-    setSession(supabase.auth.getSession())
-    supabase.auth.onAuthStateChange((_event, _session) => {
-      setSession(_session)
-    })
-  }, [])
+  const { session } = useGetSession()
   return (
     <div>
       Hello
