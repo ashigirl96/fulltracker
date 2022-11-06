@@ -1,25 +1,25 @@
-// import { useCallback, useState } from 'react'
-//
-// import { useBoolean } from '@/hooks/useBoolean'
-// import { supabase } from '@/lib/susbase/client'
-//
-// export function Auth() {
-//   const { value: loading, setValue: setLoading } = useBoolean(false)
-//   const [email, setEmail] = useState('')
-//
-//   const handleLogin = useCallback(async (email) => {
-//     try {
-//       setLoading(true)
-//       const { error } = await supabase.auth.signInWithOtp({ email })
-//       if (error) throw error
-//     } catch (e) {
-//       alert(e.error_description || e.message)
-//     } finally {
-//       setLoading(false)
-//     }
-//   }, [])
-// }
+import { Suspense, useCallback } from 'react'
+
+import { supabase } from '@/lib/susbase/client'
 
 export function Auth() {
-  return 1
+  const handleLogin = useCallback(async () => {
+    try {
+      const { error, data } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      })
+      if (error) throw error
+      console.log(JSON.stringify(data))
+    } catch (e) {
+      alert(e.error_description || e.message)
+    }
+  }, [])
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>
+        <button onClick={handleLogin}>Login</button>
+      </div>
+    </Suspense>
+  )
 }
