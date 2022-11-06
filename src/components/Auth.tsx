@@ -4,15 +4,13 @@ import { supabase } from '@/lib/susbase/client'
 
 export function Auth() {
   const handleLogin = useCallback(async () => {
-    try {
-      const { error, data } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-      })
-      if (error) throw error
-      console.log(JSON.stringify(data))
-    } catch (e) {
-      alert(e.error_description || e.message)
+    const { error, data } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    })
+    if (error) {
+      alert(error.message)
     }
+    console.log(JSON.stringify(data))
   }, [])
 
   return (
